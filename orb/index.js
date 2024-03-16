@@ -172,7 +172,7 @@ var material = new THREE.ShaderMaterial({
 
 
 // create mesh
-var mesh = new THREE.Mesh(geometry, blinnMaterial); 
+var mesh = new THREE.Mesh(geometry, toonMaterial); 
 var scale = 1;
 mesh.scale.set(scale, scale, scale);
 scene.add(mesh);
@@ -191,7 +191,9 @@ function update() {
     diamondMaterial.needsUpdate = true;
     noiseMaterial.needsUpdate = true;
     dotsMaterial.needsUpdate = true;
-    // toonMaterial.needsUpdate = true;
+    toonMaterial.needsUpdate = true;
+    phongMaterial.needsUpdate = true;
+    blinnMaterial.needsUpdate = true;
 
     requestAnimationFrame(update);
     renderer.render(scene, camera);
