@@ -11,6 +11,8 @@ uniform float shininess;
 
 uniform vec3 lightPosition;
 
+uniform vec3 baseColor;
+
 // The value of our shared variable is given as the interpolation between normals computed in the vertex shader
 // below we can see the shared variable we passed from the vertex shader using the 'in' classifier
 in vec3 interpolatedNormal;
@@ -41,7 +43,7 @@ void main() {
 
     // color of the surface of the model. Here I am assuming it to be white
     //////////////////////////////////////////////////////////////////////////
-    vec3 modelColor = vec3(1.0, 1.0, 1.0);
+    vec3 modelColor = baseColor;
 
 
     // compute the color of the light that is hitting the object

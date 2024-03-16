@@ -1,6 +1,7 @@
 uniform vec3 toonColor;
 uniform vec3 toonColor2;
 uniform vec3 outlineColor;
+uniform int steps;
 
 // The value of our shared variable is given as the interpolation between normals computed in the vertex shader
 // below we can see the shared variable we passed from the vertex shader using the 'in' classifier
@@ -46,7 +47,7 @@ void main() {
 
     // get quantized steps
     // here I will use 4 steps
-    int number_steps = 4;
+    int number_steps = steps;
     vec3 final_color = shade_cell_step(number_steps, intensity);
     
     // Set a dark fragment color if the current fragment is located near the edge of the 3D model

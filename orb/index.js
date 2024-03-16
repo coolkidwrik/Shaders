@@ -112,13 +112,15 @@ const toonMaterial = new THREE.ShaderMaterial({
         lightPosition: { type: 'c', value: light.position },
         toonColor: toonColor,
         toonColor2: toonColor2,
-        outlineColor: outlineColor
+        outlineColor: outlineColor,
+        steps: { type: "f", value: 10.0 }
     },
     vertexShader: toon_shader.VS,
     fragmentShader: toon_shader.FS
 });
 
 // PHONG
+const baseColor = { type: 'c', value: new THREE.Color(1.0, 1.0, 1.0) };
 const ambientColor = { type: 'c', value: new THREE.Color(0.0, 0.0, 1.0) };
 const diffuseColor = { type: 'c', value: new THREE.Color(0.0, 1.0, 1.0) };
 const specularColor = { type: 'c', value: new THREE.Color(1.0, 1.0, 1.0) };
@@ -136,7 +138,8 @@ const phongMaterial = new THREE.ShaderMaterial({
         kAmbient: kAmbient,
         kDiffuse: kDiffuse,
         kSpecular: kSpecular,
-        shininess: shininess
+        shininess: shininess,
+        baseColor: baseColor
     },
     vertexShader: phong_shader.VS,
     fragmentShader: phong_shader.FS_PHONG
@@ -152,7 +155,8 @@ const blinnMaterial = new THREE.ShaderMaterial({
         kAmbient: kAmbient,
         kDiffuse: kDiffuse,
         kSpecular: kSpecular,
-        shininess: shininess
+        shininess: shininess,
+        baseColor: baseColor
     },
     vertexShader: phong_shader.VS,
     fragmentShader: phong_shader.FS_BLINN
@@ -172,7 +176,7 @@ var material = new THREE.ShaderMaterial({
 
 
 // create mesh
-var mesh = new THREE.Mesh(geometry, toonMaterial); 
+var mesh = new THREE.Mesh(geometry, blinnMaterial); 
 var scale = 1;
 mesh.scale.set(scale, scale, scale);
 scene.add(mesh);
