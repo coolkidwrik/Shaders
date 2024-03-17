@@ -34,6 +34,11 @@ fs = await fetch('../phong_shading/phong.fs.glsl').then((response) => response.t
 var fs1 = await fetch('../phong_shading/blinn_phong.fs.glsl').then((response) => response.text());
 var phong_shader = { VS: vs, FS_PHONG: fs , FS_BLINN: fs1 };
 
+// glass shader
+vs = await fetch('../glass/glass.vs.glsl').then((response) => response.text());
+fs = await fetch('../glass/glass.fs.glsl').then((response) => response.text());
+var glass_shader = { VS: vs, FS: fs };
+
 
 
 /////////////////////////////////////////////////////////
@@ -163,6 +168,15 @@ const blinnMaterial = new THREE.ShaderMaterial({
 });
 
 
+// GLASS
+// work in progress
+const glassMaterial = new THREE.ShaderMaterial({
+    vertexShader: glass_shader.VS,
+    fragmentShader: glass_shader.FS
+});
+
+
+
 var material = new THREE.ShaderMaterial({
     uniforms: {
         utime: ticks,
@@ -176,7 +190,7 @@ var material = new THREE.ShaderMaterial({
 
 
 // create mesh
-var mesh = new THREE.Mesh(geometry, blinnMaterial); 
+var mesh = new THREE.Mesh(geometry, glassMaterial); 
 var scale = 1;
 mesh.scale.set(scale, scale, scale);
 scene.add(mesh);
@@ -198,6 +212,7 @@ function update() {
     toonMaterial.needsUpdate = true;
     phongMaterial.needsUpdate = true;
     blinnMaterial.needsUpdate = true;
+    glassMaterial.needsUpdate = true;
 
     requestAnimationFrame(update);
     renderer.render(scene, camera);
