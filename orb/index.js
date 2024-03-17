@@ -50,13 +50,15 @@ const {
     scene,
     camera
   } = setup();
-
 // time ticks
 const ticks = { type: "f", value: 0.0 };
 
 // add directional light
 var light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(5, 3, 5);
+
+// set background color
+scene.background = new THREE.Color(0xffffff);
 
 // add spotlight
 // var light = new THREE.SpotLight(0xffffff, 1);
@@ -171,6 +173,12 @@ const blinnMaterial = new THREE.ShaderMaterial({
 // GLASS
 // work in progress
 const glassMaterial = new THREE.ShaderMaterial({
+    uniforms: {
+        lightPosition: { type: 'c', value: light.position },
+        specularColor: specularColor,
+        kSpecular: kSpecular,
+        shininess: shininess,
+    },
     vertexShader: glass_shader.VS,
     fragmentShader: glass_shader.FS
 });
