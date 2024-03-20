@@ -39,6 +39,11 @@ vs = await fetch('../glass/glass.vs.glsl').then((response) => response.text());
 fs = await fetch('../glass/glass.fs.glsl').then((response) => response.text());
 var glass_shader = { VS: vs, FS: fs };
 
+// static shader
+vs = await fetch('../static/static.vs.glsl').then((response) => response.text());
+fs = await fetch('../static/static.fs.glsl').then((response) => response.text());
+var static_shader = { VS: vs, FS: fs };
+
 
 
 /////////////////////////////////////////////////////////
@@ -183,6 +188,15 @@ const glassMaterial = new THREE.ShaderMaterial({
     fragmentShader: glass_shader.FS
 });
 
+// STATIC
+const staticMaterial = new THREE.ShaderMaterial({
+    uniforms: {
+        ticks: ticks
+    },
+    vertexShader: static_shader.VS,
+    fragmentShader: static_shader.FS
+});
+
 
 
 var material = new THREE.ShaderMaterial({
@@ -198,7 +212,7 @@ var material = new THREE.ShaderMaterial({
 
 
 // create mesh
-var mesh = new THREE.Mesh(geometry, glassMaterial); 
+var mesh = new THREE.Mesh(geometry, staticMaterial); 
 var scale = 1;
 mesh.scale.set(scale, scale, scale);
 scene.add(mesh);
@@ -221,6 +235,7 @@ function update() {
     phongMaterial.needsUpdate = true;
     blinnMaterial.needsUpdate = true;
     glassMaterial.needsUpdate = true;
+    staticMaterial.needsUpdate = true;
 
     requestAnimationFrame(update);
     renderer.render(scene, camera);
