@@ -21,6 +21,8 @@ void fresnel_edge(vec3 fragmentColor, float edge) {
 }
 
 
+
+// I consider this a Toon style shader for glass objects
 void main() {
     // compute the direction of the light
     vec3 lightDirection = normalize(lightPosition - worldPosition);

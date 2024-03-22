@@ -36,7 +36,7 @@ var phong_shader = { VS: vs, FS_PHONG: fs , FS_BLINN: fs1 };
 
 // glass shader
 vs = await fetch('../glass/glass.vs.glsl').then((response) => response.text());
-fs = await fetch('../glass/glass.fs.glsl').then((response) => response.text());
+fs = await fetch('../glass/toon_glass.fs.glsl').then((response) => response.text());
 var glass_shader = { VS: vs, FS: fs };
 
 // static shader
@@ -175,9 +175,8 @@ const blinnMaterial = new THREE.ShaderMaterial({
 });
 
 
-// GLASS
-// work in progress
-const glassMaterial = new THREE.ShaderMaterial({
+// Toon-GLASS
+const toonGlassMaterial = new THREE.ShaderMaterial({
     uniforms: {
         lightPosition: { type: 'c', value: light.position },
         specularColor: specularColor,
@@ -187,6 +186,8 @@ const glassMaterial = new THREE.ShaderMaterial({
     vertexShader: glass_shader.VS,
     fragmentShader: glass_shader.FS
 });
+
+// toonGlassMaterial.blending = THREE.CustomBlending;
 
 // STATIC
 const staticMaterial = new THREE.ShaderMaterial({
@@ -212,7 +213,7 @@ var material = new THREE.ShaderMaterial({
 
 
 // create mesh
-var mesh = new THREE.Mesh(geometry, staticMaterial); 
+var mesh = new THREE.Mesh(geometry, toonGlassMaterial); 
 var scale = 1;
 mesh.scale.set(scale, scale, scale);
 scene.add(mesh);
@@ -231,10 +232,9 @@ function update() {
     diamondMaterial.needsUpdate = true;
     noiseMaterial.needsUpdate = true;
     dotsMaterial.needsUpdate = true;
-    toonMaterial.needsUpdate = true;
     phongMaterial.needsUpdate = true;
     blinnMaterial.needsUpdate = true;
-    glassMaterial.needsUpdate = true;
+    toonGlassMaterial.needsUpdate = true;
     staticMaterial.needsUpdate = true;
 
     requestAnimationFrame(update);
