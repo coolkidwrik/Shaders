@@ -79,7 +79,7 @@ const ticks = { type: "f", value: 0.0 };
 scene.background = new THREE.Color(0xffffff);
 const spherePosition = { type: 'v3', value: new THREE.Vector3(0.0, 0.0, 2.0) };
 const light = new THREE.PointLight(0xffffff, 200);
-light.position.set(0, 0, 2);
+light.position.set(0, 0, 1.0);
 
 // Shader materials
 const sphereMaterial = new THREE.ShaderMaterial({
@@ -92,7 +92,7 @@ const sphereMaterial = new THREE.ShaderMaterial({
 
 // Create the main sphere geometry (light source)
 // https://threejs.org/docs/#api/en/geometries/SphereGeometry
-const sphereGeometry = new THREE.IcosahedronGeometry(0.1, 12);
+const sphereGeometry = new THREE.IcosahedronGeometry(0.2, 12);
 const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 sphere.position.set(light.position.x, light.position.y, light.position.z);
 sphere.parent = worldFrame;
@@ -293,7 +293,7 @@ function checkKeyboard() {
     mesh.material = mesh_mat;
 
     // change the object
-    if (keyboard.pressed("A")) {
+    if (keyboard.pressed("shift+A")) {
         // place armadillo
         scene.remove(mesh);
         // loadAndPlaceOBJ('utils/obj/armadillo.obj', mesh_mat, function (armadillo) {
@@ -303,7 +303,7 @@ function checkKeyboard() {
         //     armadillo.parent = worldFrame;
         //     scene.add(armadillo);
         // });
-    } else if (keyboard.pressed("B")) {
+    } else if (keyboard.pressed("shift+B")) {
         // place ball
         scene.add(mesh);
     }

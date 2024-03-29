@@ -1,7 +1,7 @@
 varying vec3 vNormal;
 varying vec2 vUv;
-varying vec3 vViewPosition;
+varying vec3 vWorldPosition;
 
 void main() {
-    gl_FragColor = vec4(abs(-vViewPosition), 1.0);
+    gl_FragColor = vec4(abs(vNormal), 1.0);
 }

@@ -3,6 +3,7 @@ uniform float utime;
 varying vec3 vNormal;
 varying vec2 vUv;
 varying vec3 vViewPosition;
+varying vec3 vWorldPosition;
 
 void main() {
     vNormal = normalMatrix * normal;
@@ -13,5 +14,6 @@ void main() {
     // pos.y = pos.y + sin(3.0*utime + position.x) + 1.0;
 
     gl_Position = pos;
-    vViewPosition = (modelMatrix * vec4(position, 1.0)).xyz;
+    vViewPosition = (modelViewMatrix * vec4(position, 1.0)).xyz;
+    vWorldPosition = (modelMatrix * vec4(position, 1.0)).xyz;;
 }
