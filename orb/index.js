@@ -225,9 +225,75 @@ scene.add(mesh);
 // Update Scene
 /////////////////////////////////////////////////////////
 
-function update() {
-    ticks.value += 1 / 100.0;
+// create keyboard state
+var keyboard = new THREEx.KeyboardState();
 
+function checkKeyboard() {
+
+    if (keyboard.pressed("1")) {
+        // change material to phong
+        mesh.material = phongMaterial;
+    } else if (keyboard.pressed("2")) {
+        // change material to blinn-phong
+        mesh.material = blinnMaterial;
+    } else if (keyboard.pressed("3")) {
+        // change material to diamond
+        mesh.material = diamondMaterial;
+    } else if (keyboard.pressed("4")) {
+        // change material to noise
+        mesh.material = noiseMaterial;
+    } else if (keyboard.pressed("5")) {
+        // change material to dots
+        mesh.material = dotsMaterial;
+    } else if (keyboard.pressed("6")) {
+        // change material to toon
+        mesh.material = toonMaterial;
+    } else if (keyboard.pressed("7")) {
+        // change material to toon-glass
+        mesh.material = toonGlassMaterial;
+    } else if (keyboard.pressed("8")) {
+        // change material to static
+        mesh.material = staticMaterial;
+    } else if (keyboard.pressed("9")) {
+
+    } else if (keyboard.pressed("0")) {
+
+    }
+
+    // change the object
+    if (keyboard.pressed("A")) {
+        // place armadillo
+    } else if (keyboard.pressed("B")) {
+        // place ball
+    }
+
+  
+    // // use arrow keys to move the light
+    // if (keyboard.pressed("up"))
+    //   spherePosition.value.z -= 0.3;
+    // else if (keyboard.pressed("down"))
+    //   spherePosition.value.z += 0.3;
+  
+    // if (keyboard.pressed("left"))
+    //   spherePosition.value.x -= 0.3;
+    // else if (keyboard.pressed("right"))
+    //   spherePosition.value.x += 0.3;
+  
+    // if (keyboard.pressed("E"))
+    //   spherePosition.value.y -= 0.3;
+    // else if (keyboard.pressed("Q"))
+    //   spherePosition.value.y += 0.3;
+  
+    // sphereLight.position.set(spherePosition.value.x, spherePosition.value.y, spherePosition.value.z);
+  }
+
+
+
+
+
+
+// set material update
+function updateMaterial(material) {
     // The following tells three.js that some uniforms might have changed
     diamondMaterial.needsUpdate = true;
     noiseMaterial.needsUpdate = true;
@@ -236,6 +302,13 @@ function update() {
     blinnMaterial.needsUpdate = true;
     toonGlassMaterial.needsUpdate = true;
     staticMaterial.needsUpdate = true;
+}
+
+function update() {
+    ticks.value += 1 / 100.0;
+
+    updateMaterial(mesh.material);
+    checkKeyboard();
 
     requestAnimationFrame(update);
     renderer.render(scene, camera);
