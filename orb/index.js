@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { setup } from './utils/setup.js';
+import { setup , loadAndPlaceOBJ} from './utils/setup.js';
 import { THREEx } from './utils/KeyboardState.js';
 
 
@@ -45,6 +45,12 @@ fs = await fetch('../static/static.fs.glsl').then((response) => response.text())
 var static_shader = { VS: vs, FS: fs };
 
 
+// dynamic light shqder
+vs = await fetch('./utils/glsl/orb.vs.glsl').then((response) => response.text());
+fs = await fetch('./utils/glsl/orb.fs.glsl').then((response) => response.text());
+var dynamic_light_shader = { VS: vs, FS: fs };
+
+
 
 /////////////////////////////////////////////////////////
 // setup elements for scene
@@ -55,33 +61,55 @@ const {
     scene,
     camera
   } = setup();
+
+// World Coordinate Frame: other objects are defined with respect to it.
+const worldFrame = new THREE.AxesHelper(1);
+
 // time ticks
 const ticks = { type: "f", value: 0.0 };
 
-// add directional light
-var light = new THREE.DirectionalLight(0xffffff, 1);
-light.position.set(5, 3, 5);
 
-// set background color
+// dyanmic light
+/////////////////////////////////////////////////////////
+// // add directional light
+// var light = new THREE.DirectionalLight(0xffffff, 1);
+// light.position.set(5, 3, 5);
+
+// // set background color
 scene.background = new THREE.Color(0xffffff);
+const spherePosition = { type: 'v3', value: new THREE.Vector3(0.0, 0.0, 0.0) };
+const light = new THREE.PointLight(0xffffff, 200);
 
-// add spotlight
-// var light = new THREE.SpotLight(0xffffff, 1);
-// light.position.set(0, 5, 0);
-// light.castShadow = true;
-// light.shadow.mapSize.width = 1024;
-// light.shadow.mapSize.height = 1024;
-// light.shadow.camera.near = 0.1;
-// light.shadow.camera.far = 100;
-// light.shadow.camera.fov = 30;
-// scene.add(light);
+// Shader materials
+const sphereMaterial = new THREE.ShaderMaterial({
+    uniforms: {
+    spherePosition: spherePosition
+    },
+    vertexShader: dynamic_light_shader.VS,
+    fragmentShader: dynamic_light_shader.FS
+});
+
+// Create the main sphere geometry (light source)
+// https://threejs.org/docs/#api/en/geometries/SphereGeometry
+const sphereGeometry = new THREE.IcosahedronGeometry(0.2, 12);
+const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+sphere.position.set(0.0, 1.5, 0.0);
+sphere.parent = worldFrame;
+scene.add(sphere);
 
 /////////////////////////////////////////////////////////
-// Create Mesh for Orb
+// Create Mesh for ball
 /////////////////////////////////////////////////////////
 
-// create geometry
-var geometry = new THREE.IcosahedronGeometry(1, 12);
+
+// create geometries
+/////////////////////////////////////////////////////////
+
+// create armadillo geometry
+
+
+// create ball geometry
+var ball_geometry = new THREE.IcosahedronGeometry(1, 12);
 
 
 // define materials
@@ -213,7 +241,7 @@ var material = new THREE.ShaderMaterial({
 
 
 // create mesh
-var mesh = new THREE.Mesh(geometry, toonGlassMaterial); 
+var mesh = new THREE.Mesh(ball_geometry, phongMaterial); 
 var scale = 1;
 mesh.scale.set(scale, scale, scale);
 scene.add(mesh);
@@ -224,6 +252,8 @@ scene.add(mesh);
 /////////////////////////////////////////////////////////
 // Update Scene
 /////////////////////////////////////////////////////////
+// material to use
+var mesh_mat = phongMaterial;
 
 // create keyboard state
 var keyboard = new THREEx.KeyboardState();
@@ -232,59 +262,70 @@ function checkKeyboard() {
 
     if (keyboard.pressed("1")) {
         // change material to phong
-        mesh.material = phongMaterial;
+        mesh_mat = phongMaterial;
     } else if (keyboard.pressed("2")) {
         // change material to blinn-phong
-        mesh.material = blinnMaterial;
+        mesh_mat = blinnMaterial;
     } else if (keyboard.pressed("3")) {
         // change material to diamond
-        mesh.material = diamondMaterial;
+        mesh_mat = diamondMaterial;
     } else if (keyboard.pressed("4")) {
         // change material to noise
-        mesh.material = noiseMaterial;
+        mesh_mat = noiseMaterial;
     } else if (keyboard.pressed("5")) {
         // change material to dots
-        mesh.material = dotsMaterial;
+        mesh_mat = dotsMaterial;
     } else if (keyboard.pressed("6")) {
         // change material to toon
-        mesh.material = toonMaterial;
+        mesh_mat = toonMaterial;
     } else if (keyboard.pressed("7")) {
         // change material to toon-glass
-        mesh.material = toonGlassMaterial;
+        mesh_mat = toonGlassMaterial;
     } else if (keyboard.pressed("8")) {
         // change material to static
-        mesh.material = staticMaterial;
+        mesh_mat = staticMaterial;
     } else if (keyboard.pressed("9")) {
 
     } else if (keyboard.pressed("0")) {
 
     }
+    mesh.material = mesh_mat;
 
     // change the object
     if (keyboard.pressed("A")) {
         // place armadillo
+        scene.remove(mesh);
+        // loadAndPlaceOBJ('utils/obj/armadillo.obj', mesh_mat, function (armadillo) {
+        //     armadillo.position.set(0.0, 0.0, 0.0);
+        //     armadillo.rotation.y = Math.PI;
+        //     armadillo.scale.set(2.0, 2.0, 2.0);
+        //     armadillo.parent = worldFrame;
+        //     scene.add(armadillo);
+        // });
     } else if (keyboard.pressed("B")) {
         // place ball
+        scene.add(mesh);
     }
 
   
-    // // use arrow keys to move the light
-    // if (keyboard.pressed("up"))
-    //   spherePosition.value.z -= 0.3;
-    // else if (keyboard.pressed("down"))
-    //   spherePosition.value.z += 0.3;
+    // use arrow keys to move the light
+    let move_speed = 0.5
+    if (keyboard.pressed("up"))
+      spherePosition.value.z -= move_speed;
+    else if (keyboard.pressed("down"))
+      spherePosition.value.z += move_speed;
   
-    // if (keyboard.pressed("left"))
-    //   spherePosition.value.x -= 0.3;
-    // else if (keyboard.pressed("right"))
-    //   spherePosition.value.x += 0.3;
+    if (keyboard.pressed("left"))
+      spherePosition.value.x -= move_speed;
+    else if (keyboard.pressed("right"))
+      spherePosition.value.x += move_speed;
   
-    // if (keyboard.pressed("E"))
-    //   spherePosition.value.y -= 0.3;
-    // else if (keyboard.pressed("Q"))
-    //   spherePosition.value.y += 0.3;
+    if (keyboard.pressed("E"))
+      spherePosition.value.y -= move_speed;
+    else if (keyboard.pressed("Q"))
+      spherePosition.value.y += move_speed;
   
-    // sphereLight.position.set(spherePosition.value.x, spherePosition.value.y, spherePosition.value.z);
+    light.position.set(spherePosition.value.x, spherePosition.value.y, spherePosition.value.z);
   }
 
 
@@ -293,8 +334,9 @@ function checkKeyboard() {
 
 
 // set material update
-function updateMaterial(material) {
+function updateMaterial() {
     // The following tells three.js that some uniforms might have changed
+    sphereMaterial.needsUpdate = true;
     diamondMaterial.needsUpdate = true;
     noiseMaterial.needsUpdate = true;
     dotsMaterial.needsUpdate = true;
