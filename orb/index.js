@@ -77,8 +77,9 @@ const ticks = { type: "f", value: 0.0 };
 
 // // set background color
 scene.background = new THREE.Color(0xffffff);
-const spherePosition = { type: 'v3', value: new THREE.Vector3(0.0, 0.0, 0.0) };
+const spherePosition = { type: 'v3', value: new THREE.Vector3(0.0, 0.0, 2.0) };
 const light = new THREE.PointLight(0xffffff, 200);
+light.position.set(0, 0, 2);
 
 // Shader materials
 const sphereMaterial = new THREE.ShaderMaterial({
@@ -91,9 +92,9 @@ const sphereMaterial = new THREE.ShaderMaterial({
 
 // Create the main sphere geometry (light source)
 // https://threejs.org/docs/#api/en/geometries/SphereGeometry
-const sphereGeometry = new THREE.IcosahedronGeometry(0.2, 12);
+const sphereGeometry = new THREE.IcosahedronGeometry(0.1, 12);
 const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-sphere.position.set(0.0, 1.5, 0.0);
+sphere.position.set(light.position.x, light.position.y, light.position.z);
 sphere.parent = worldFrame;
 scene.add(sphere);
 
@@ -309,7 +310,7 @@ function checkKeyboard() {
 
   
     // use arrow keys to move the light
-    let move_speed = 0.5
+    let move_speed = 0.05;
     if (keyboard.pressed("up"))
       spherePosition.value.z -= move_speed;
     else if (keyboard.pressed("down"))
@@ -326,6 +327,7 @@ function checkKeyboard() {
       spherePosition.value.y += move_speed;
   
     light.position.set(spherePosition.value.x, spherePosition.value.y, spherePosition.value.z);
+    sphere.position.set(light.position.x, light.position.y, light.position.z);
   }
 
 
