@@ -11,8 +11,24 @@ import {RGBELoader} from 'jsm/loaders/RGBELoader.js';
 // Setup GUI for hdr environment
 /////////////////////////////////////////////////////////
 // https://fossies.org/linux/three.js/examples/webgl_loader_texture_exr.html
+const Params = {
+    exposure: 1.0,
+    hdrToneMapping: 'ACESFilmic'
+  };
+  
+  const hdrToneMappingOptions = {
+    None: THREE.NoToneMapping,
+    Linear: THREE.LinearToneMapping,
+    Reinhard: THREE.ReinhardToneMapping,
+    Cineon: THREE.CineonToneMapping,
+    ACESFilmic: THREE.ACESFilmicToneMapping
+  };
+
+
 // GUI
 const gui = new GUI();
+gui.add( Params, 'hdrToneMapping', Object.keys(hdrToneMappingOptions));
+gui.add( Params, 'exposure', 0, 2, 0.01 );
 gui.open();
 
 
