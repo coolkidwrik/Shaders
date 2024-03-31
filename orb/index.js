@@ -3,6 +3,7 @@ import { setup , loadAndPlaceOBJ} from './utils/setup.js';
 import { THREEx } from './utils/KeyboardState.js';
 import {GUI} from 'jsm/libs/dat.gui.module.js';
 import {EXRLoader} from 'jsm/loaders/EXRLoader.js';
+import {RGBELoader} from 'jsm/loaders/RGBELoader.js';
 
 
 
@@ -75,7 +76,8 @@ var dynamic_light_shader = { VS: vs, FS: fs };
 // load scene textures
 /////////////////////////////////////////////////////////
 // HDR loader
-// let HDRLoader = new EXRLoader();
+// let EXRLoader = new EXRLoader();
+// let HDRTexture = new RGBELoader();
 
 
 
@@ -94,6 +96,10 @@ const worldFrame = new THREE.AxesHelper(1);
 
 // time ticks
 const ticks = { type: "f", value: 0.0 };
+
+
+
+
 
 
 // dyanmic light
@@ -129,13 +135,8 @@ scene.add(sphere);
 
 // create geometries
 /////////////////////////////////////////////////////////
-
-// create armadillo geometry
-
-
 // create ball geometry
 var ball_geometry = new THREE.IcosahedronGeometry(1, 12);
-
 
 // define materials
 /////////////////////////////////////////////////////////
