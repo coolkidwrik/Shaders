@@ -92,8 +92,14 @@ var dynamic_light_shader = { VS: vs, FS: fs };
 // load scene textures
 /////////////////////////////////////////////////////////
 // HDR loader
-// let EXRLoader = new EXRLoader();
+let SceneLoader = new EXRLoader();
 // let HDRTexture = new RGBELoader();
+
+SceneLoader.load('./utils/scenes/paris.exr', function (texture) {
+    texture.mapping = THREE.EquirectangularReflectionMapping;
+    scene.background = texture;
+    env = texture;
+});
 
 
 
@@ -433,7 +439,26 @@ function update() {
     checkKeyboard();
 
     requestAnimationFrame(update);
+    
+    // renderer settings for HDR environment
+    /////////////////////////////////////////
+    // https://threejs.org/docs/#api/en/renderers/WebGLRenderer.physicallyCorrectLights
+    renderer.physicallyCorrectLights = true;
+    // https://threejs.org/docs/#api/en/renderers/WebGLRenderer.toneMapping
+    renderer.toneMapping = hdrToneMappingOptions[ Params.hdrToneMapping ];
+    // https://threejs.org/docs/#api/en/textures/Texture.encoding
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    var prevToneMappingExposure = renderer.toneMappingExposure;
+    renderer.toneMappingExposure = Params.exposure;
+
+    renderer.setRenderTarget(null);
     renderer.render(scene, camera);
+
+    // restore non-IBL renderer properties
+    renderer.physicallyCorrectLights = false;
+    renderer.toneMapping = THREE.NoToneMapping;
+    renderer.outputEncoding = THREE.LinearEncoding;
+    renderer.toneMappingExposure = prevToneMappingExposure;
 };
 
 update();
