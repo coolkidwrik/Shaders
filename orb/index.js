@@ -1,6 +1,18 @@
 import * as THREE from 'three';
 import { setup , loadAndPlaceOBJ} from './utils/setup.js';
 import { THREEx } from './utils/KeyboardState.js';
+import {GUI} from 'jsm/libs/dat.gui.module.js';
+import {EXRLoader} from 'jsm/loaders/EXRLoader.js';
+
+
+
+/////////////////////////////////////////////////////////
+// Setup GUI for hdr environment
+/////////////////////////////////////////////////////////
+// https://fossies.org/linux/three.js/examples/webgl_loader_texture_exr.html
+// GUI
+const gui = new GUI();
+gui.open();
 
 
 /////////////////////////////////////////////////////////
@@ -44,11 +56,26 @@ vs = await fetch('../static/static.vs.glsl').then((response) => response.text())
 fs = await fetch('../static/static.fs.glsl').then((response) => response.text());
 var static_shader = { VS: vs, FS: fs };
 
+// mirror shader
+vs = await fetch('../mirror/mirror.vs.glsl').then((response) => response.text());
+fs = await fetch('../mirror/mirror.fs.glsl').then((response) => response.text());
+var mirror_shader = { VS: vs, FS: fs };
 
-// dynamic light shqder
+
+
+
+
+
+// dynamic light shader
 vs = await fetch('./utils/glsl/orb.vs.glsl').then((response) => response.text());
 fs = await fetch('./utils/glsl/orb.fs.glsl').then((response) => response.text());
 var dynamic_light_shader = { VS: vs, FS: fs };
+
+/////////////////////////////////////////////////////////
+// load scene textures
+/////////////////////////////////////////////////////////
+// HDR loader
+// let HDRLoader = new EXRLoader();
 
 
 
@@ -71,12 +98,9 @@ const ticks = { type: "f", value: 0.0 };
 
 // dyanmic light
 /////////////////////////////////////////////////////////
-// // add directional light
-// var light = new THREE.DirectionalLight(0xffffff, 1);
-// light.position.set(5, 3, 5);
 
 // // set background color
-scene.background = new THREE.Color(0xffffff);
+scene.background = new THREE.Color(0xf6e8fa);
 const spherePosition = { type: 'v3', value: new THREE.Vector3(0.0, 0.0, 2.0) };
 const light = new THREE.PointLight(0xffffff, 200);
 light.position.set(0, 0, 1.0);
@@ -154,7 +178,7 @@ const toonMaterial = new THREE.ShaderMaterial({
         toonColor: toonColor,
         toonColor2: toonColor2,
         outlineColor: outlineColor,
-        steps: { type: "f", value: 10.0 }
+        steps: { type: "f", value: 5.0 }
     },
     vertexShader: toon_shader.VS,
     fragmentShader: toon_shader.FS
@@ -227,19 +251,27 @@ const staticMaterial = new THREE.ShaderMaterial({
     fragmentShader: static_shader.FS
 });
 
+// // MIRROR
+// const mirrorMaterial = new THREE.ShaderMaterial({
+//     uniforms: {
+//         skybox: { type: 't', value: null },
+//         matrixWorld: { type: 'm4', value: camera.matrixWorldInverse },
+//     },
+//     vertexShader: mirror_shader.VS,
+//     fragmentShader: mirror_shader.FS
+// });
 
 
-var material = new THREE.ShaderMaterial({
-    uniforms: {
-        utime: ticks,
-    },
-});
+
+
+
+
+
+
+
 /////////////////////////////////////////////////////////
 // create mesh
 /////////////////////////////////////////////////////////
-
-
-
 
 // create mesh
 var mesh = new THREE.Mesh(ball_geometry, phongMaterial); 
@@ -247,14 +279,15 @@ var scale = 1;
 mesh.scale.set(scale, scale, scale);
 scene.add(mesh);
 
-
-
-
 /////////////////////////////////////////////////////////
 // Update Scene
 /////////////////////////////////////////////////////////
 // material to use
-var mesh_mat = phongMaterial;
+let mesh_mat = phongMaterial;
+
+let dillo = null;
+
+let env = null;
 
 // create keyboard state
 var keyboard = new THREEx.KeyboardState();
@@ -290,25 +323,57 @@ function checkKeyboard() {
     } else if (keyboard.pressed("0")) {
 
     }
-    mesh.material = mesh_mat;
 
     // change the object
     if (keyboard.pressed("shift+A")) {
         // place armadillo
+
         scene.remove(mesh);
         // loadAndPlaceOBJ('utils/obj/armadillo.obj', mesh_mat, function (armadillo) {
-        //     armadillo.position.set(0.0, 0.0, 0.0);
+        //     armadillo.position.set(0.0, 0.0, -1.0);
         //     armadillo.rotation.y = Math.PI;
         //     armadillo.scale.set(2.0, 2.0, 2.0);
         //     armadillo.parent = worldFrame;
-        //     scene.add(armadillo);
         // });
     } else if (keyboard.pressed("shift+B")) {
         // place ball
         scene.add(mesh);
     }
 
-  
+    // change material
+    mesh.material = mesh_mat;
+    if (dillo != null) {
+        dillo.material = mesh_mat;
+    }
+
+
+    // change environment
+    if (keyboard.pressed("shift+0")) {
+        // change scene to standard pink
+        scene.background = new THREE.Color(0xf6e8fa);
+        env = null;
+    } else if (keyboard.pressed("shift+2")) {
+        // TODO
+    } else if (keyboard.pressed("shift+3")) {
+        // TODO
+    } else if (keyboard.pressed("shift+4")) {
+        // TODO
+    } else if (keyboard.pressed("shift+5")) {
+        // TODO
+    } else if (keyboard.pressed("shift+6")) {
+        // TODO
+    } else if (keyboard.pressed("shift+7")) {
+        // TODO
+    } else if (keyboard.pressed("shift+8")) {
+        // TODO
+    }
+
+    if (env != null) {
+        scene.background = env;
+    }
+
+
+
     // use arrow keys to move the light
     let move_speed = 0.05;
     if (keyboard.pressed("up"))
@@ -330,11 +395,6 @@ function checkKeyboard() {
     sphere.position.set(light.position.x, light.position.y, light.position.z);
   }
 
-
-
-
-
-
 // set material update
 function updateMaterial() {
     // The following tells three.js that some uniforms might have changed
@@ -346,6 +406,7 @@ function updateMaterial() {
     blinnMaterial.needsUpdate = true;
     toonGlassMaterial.needsUpdate = true;
     staticMaterial.needsUpdate = true;
+    // mirrorMaterial.needsUpdate = true;
 }
 
 function update() {

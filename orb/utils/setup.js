@@ -24,6 +24,10 @@ function setup() {
     renderer.setSize(w, h);
     document.body.appendChild(renderer.domElement);
 
+    renderer.toneMapping = THREE.ReinhardToneMapping;
+    renderer.toneMappingExposure = 2.0;
+
+
     // Setup orbit controls for the camera.
     new OrbitControls(camera, renderer.domElement);
 
@@ -64,7 +68,7 @@ function loadAndPlaceOBJ(file, material, place) {
     };
 
     const loader = new OBJLoader(manager);
-    loader.load(file, function (object) {
+   loader.load(file, function (object) {
         object.traverse(function (child) {
             if (child instanceof THREE.Mesh) {
                 child.material = material;
