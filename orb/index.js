@@ -92,14 +92,8 @@ var dynamic_light_shader = { VS: vs, FS: fs };
 // load scene textures
 /////////////////////////////////////////////////////////
 // HDR loader
-let SceneLoader = new EXRLoader();
-// let HDRTexture = new RGBELoader();
-
-SceneLoader.load('./utils/scenes/paris.exr', function (texture) {
-    texture.mapping = THREE.EquirectangularReflectionMapping;
-    scene.background = texture;
-    env = texture;
-});
+// let SceneLoader = new EXRLoader();
+let SceneLoader = new RGBELoader();
 
 
 
@@ -128,7 +122,8 @@ const ticks = { type: "f", value: 0.0 };
 /////////////////////////////////////////////////////////
 
 // // set background color
-scene.background = new THREE.Color(0xf6e8fa);
+let pink = new THREE.Color(0xf6e8fa);
+scene.background = pink;
 const spherePosition = { type: 'v3', value: new THREE.Vector3(0.0, 0.0, 2.0) };
 const light = new THREE.PointLight(0xffffff, 200);
 light.position.set(0, 0, 1.0);
@@ -373,8 +368,17 @@ function checkKeyboard() {
     // change environment
     if (keyboard.pressed("shift+0")) {
         // change scene to standard pink
-        scene.background = new THREE.Color(0xf6e8fa);
+        scene.background = pink;
         env = null;
+        console.log(env);
+    } else if (keyboard.pressed("shift+1")) {
+        // change scene to paris environment
+        SceneLoader.load('./utils/scenes/paris.hdr', function (texture) {
+            texture.mapping = THREE.EquirectangularReflectionMapping;
+            scene.background = texture;
+            env = texture;
+        });
+        console.log(env);
     } else if (keyboard.pressed("shift+2")) {
         // TODO
     } else if (keyboard.pressed("shift+3")) {
@@ -386,8 +390,6 @@ function checkKeyboard() {
     } else if (keyboard.pressed("shift+6")) {
         // TODO
     } else if (keyboard.pressed("shift+7")) {
-        // TODO
-    } else if (keyboard.pressed("shift+8")) {
         // TODO
     }
 
