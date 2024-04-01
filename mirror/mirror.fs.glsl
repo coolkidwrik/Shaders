@@ -1,3 +1,4 @@
+// https://makc3d.wordpress.com/2017/01/19/sampling-equirectangular-textures/
 in vec3 vcsNormal;
 in vec3 vcsPosition;
 
