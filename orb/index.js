@@ -1,9 +1,9 @@
 import * as THREE from 'three';
-import { setup , loadAndPlaceOBJ} from './utils/setup.js';
+import { setup } from './utils/setup.js';
 import { THREEx } from './utils/KeyboardState.js';
-import {GUI} from 'jsm/libs/dat.gui.module.js';
-import {RGBELoader} from 'jsm/loaders/RGBELoader.js';
-
+import { GUI } from 'jsm/libs/dat.gui.module.js';
+import { RGBELoader } from 'jsm/loaders/RGBELoader.js';
+import { OBJLoader } from 'jsm/loaders/OBJLoader.js';
 
 
 /////////////////////////////////////////////////////////
@@ -22,7 +22,6 @@ const Params = {
     Cineon: THREE.CineonToneMapping,
     ACESFilmic: THREE.ACESFilmicToneMapping
   };
-
 
 // GUI
 const gui = new GUI();
@@ -55,14 +54,10 @@ var toon_shader = await loadShader('../toon_shading/toon.vs.glsl', '../toon_shad
 // phong shader
 let vs = await fetch('../phong_shading/phong.vs.glsl').then((response) => response.text());
 let fs = await fetch('../phong_shading/phong.fs.glsl').then((response) => response.text());
-var fs1 = await fetch('../phong_shading/blinn_phong.fs.glsl').then((response) => response.text());
+let fs1 = await fetch('../phong_shading/blinn_phong.fs.glsl').then((response) => response.text());
 var phong_shader = { VS: vs, FS_PHONG: fs , FS_BLINN: fs1 };
 
 // glass shader
-// vs = await fetch('../glass/glass.vs.glsl').then((response) => response.text());
-// fs = await fetch('../glass/toon_glass.fs.glsl').then((response) => response.text());
-// var glass_shader = { VS: vs, FS: fs };
-
 var glass_shader = await loadShader('../glass/glass.vs.glsl', '../glass/toon_glass.fs.glsl');
 
 // static shader
@@ -162,6 +157,18 @@ scene.add(sphere);
 /////////////////////////////////////////////////////////
 // create ball geometry
 var ball_geometry = new THREE.IcosahedronGeometry(1, 12);
+
+var dillo;
+
+var objectLoader = new OBJLoader();
+objectLoader.load('./utils/obj/armadillo.obj', function (obj) {
+    dillo = obj;
+    dillo.position.set(0.0, 0.0, -1.0);
+    dillo.rotation.y = Math.PI;
+    dillo.scale.set(2.0, 2.0, 2.0);
+    dillo.parent = worldFrame;
+});
+
 
 // define materials
 /////////////////////////////////////////////////////////
@@ -290,12 +297,6 @@ const mirrorMaterial = new THREE.ShaderMaterial({
 
 
 
-
-
-
-
-
-
 /////////////////////////////////////////////////////////
 // create mesh
 /////////////////////////////////////////////////////////
@@ -311,8 +312,6 @@ scene.add(mesh);
 /////////////////////////////////////////////////////////
 // material to use
 let mesh_mat = phongMaterial;
-
-let dillo = null;
 
 // create keyboard state
 var keyboard = new THREEx.KeyboardState();
@@ -357,19 +356,23 @@ function checkKeyboard() {
         // place armadillo
 
         scene.remove(mesh);
-        // loadAndPlaceOBJ('utils/obj/armadillo.obj', mesh_mat, function (armadillo) {
-        //     armadillo.position.set(0.0, 0.0, -1.0);
-        //     armadillo.rotation.y = Math.PI;
-        //     armadillo.scale.set(2.0, 2.0, 2.0);
-        //     armadillo.parent = worldFrame;
-        // });
+        scene.add(dillo);
     } else if (keyboard.pressed("shift+B")) {
         // place ball
+        scene.remove(dillo);
         scene.add(mesh);
     }
 
     // change material
     mesh.material = mesh_mat;
+
+    if (dillo) {
+        dillo.traverse(function (child) {
+            if (child instanceof THREE.Mesh) {
+                child.material = mesh_mat;
+            }
+        });
+    }
 
 
     // change environment

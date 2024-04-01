@@ -49,36 +49,6 @@ function setup() {
 }
 
 /**
- * Utility function that loads obj files using THREE.OBJLoader
- * and places them in the scene using the given callback `place`.
- * 
- * The variable passed into the place callback is a THREE.Object3D.
- */
-function loadAndPlaceOBJ(file, material, place) {
-    const manager = new THREE.LoadingManager();
-    manager.onProgress = function (item, loaded, total) {
-        console.log(item, loaded, total);
-    };
-
-    const onProgress = function (xhr) {
-        if (xhr.lengthComputable) {
-            const percentComplete = xhr.loaded / xhr.total * 100.0;
-            console.log(Math.round(percentComplete, 2) + '% downloaded');
-        }
-    };
-
-    const loader = new OBJLoader(manager);
-   loader.load(file, function (object) {
-        object.traverse(function (child) {
-            if (child instanceof THREE.Mesh) {
-                child.material = material;
-            }
-        });
-        place(object);
-    }, onProgress);
-}
-
-/**
  * Utility function that loads glb files 
  */
 function loadAndPlaceGLB(file, place) {
@@ -100,4 +70,4 @@ function loadAndPlaceGLB(file, place) {
     }, onProgress);
 }
 
-export {setup, loadAndPlaceOBJ, loadAndPlaceGLB};
+export {setup, loadAndPlaceGLB};
