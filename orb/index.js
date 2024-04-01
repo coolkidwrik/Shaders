@@ -12,7 +12,7 @@ import {RGBELoader} from 'jsm/loaders/RGBELoader.js';
 /////////////////////////////////////////////////////////
 // https://polyhaven.com/hdris
 const Params = {
-    exposure: 1.0,
+    exposure: 0.2,
     hdrToneMapping: 'ACESFilmic'
   };
   
@@ -94,6 +94,14 @@ var dynamic_light_shader = { VS: vs, FS: fs };
 // HDR loader
 // let SceneLoader = new EXRLoader();
 let SceneLoader = new RGBELoader();
+
+let env = null;
+
+// load default HDR environment
+SceneLoader.load('./utils/scenes/paris.hdr', function (texture) {
+    texture.mapping = THREE.EquirectangularReflectionMapping;
+    env = texture;
+});
 
 
 
@@ -269,15 +277,16 @@ const staticMaterial = new THREE.ShaderMaterial({
     fragmentShader: static_shader.FS
 });
 
-// // MIRROR
-// const mirrorMaterial = new THREE.ShaderMaterial({
-//     uniforms: {
-//         skybox: { type: 't', value: null },
-//         matrixWorld: { type: 'm4', value: camera.matrixWorldInverse },
-//     },
-//     vertexShader: mirror_shader.VS,
-//     fragmentShader: mirror_shader.FS
-// });
+// MIRROR
+// work in progress
+const mirrorMaterial = new THREE.ShaderMaterial({
+    uniforms: {
+        skybox: { type: 't', value: env },
+        matrixWorld: { type: 'm4', value: camera.matrixWorldInverse },
+    },
+    vertexShader: mirror_shader.VS,
+    fragmentShader: mirror_shader.FS
+});
 
 
 
@@ -304,8 +313,6 @@ scene.add(mesh);
 let mesh_mat = phongMaterial;
 
 let dillo = null;
-
-let env = null;
 
 // create keyboard state
 var keyboard = new THREEx.KeyboardState();
@@ -337,6 +344,9 @@ function checkKeyboard() {
         // change material to static
         mesh_mat = staticMaterial;
     } else if (keyboard.pressed("9")) {
+        // change material to mirror
+        console.log(env);
+        mesh_mat = mirrorMaterial;
 
     } else if (keyboard.pressed("0")) {
 
@@ -369,7 +379,6 @@ function checkKeyboard() {
     if (keyboard.pressed("shift+0")) {
         // change scene to standard pink
         scene.background = pink;
-        env = null;
     } else if (keyboard.pressed("shift+1")) {
         // change scene to paris environment
         SceneLoader.load('./utils/scenes/paris.hdr', function (texture) {
@@ -378,25 +387,19 @@ function checkKeyboard() {
             env = texture;
         });
     } else if (keyboard.pressed("shift+2")) {
+        // change scene to stars environment
         SceneLoader.load('./utils/scenes/stars.hdr', function (texture) {
             texture.mapping = THREE.EquirectangularReflectionMapping;
             scene.background = texture;
             env = texture;
         });
     } else if (keyboard.pressed("shift+3")) {
-        // TODO
-    } else if (keyboard.pressed("shift+4")) {
-        // TODO
-    } else if (keyboard.pressed("shift+5")) {
-        // TODO
-    } else if (keyboard.pressed("shift+6")) {
-        // TODO
-    } else if (keyboard.pressed("shift+7")) {
-        // TODO
-    }
-
-    if (env != null) {
-        scene.background = env;
+        // change scene to sunset environment
+        SceneLoader.load('./utils/scenes/sky.hdr', function (texture) {
+            texture.mapping = THREE.EquirectangularReflectionMapping;
+            scene.background = texture;
+            env = texture;
+        });
     }
 
 
@@ -433,7 +436,7 @@ function updateMaterial() {
     blinnMaterial.needsUpdate = true;
     toonGlassMaterial.needsUpdate = true;
     staticMaterial.needsUpdate = true;
-    // mirrorMaterial.needsUpdate = true;
+    mirrorMaterial.needsUpdate = true;
 }
 
 function update() {
