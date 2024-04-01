@@ -370,7 +370,6 @@ function checkKeyboard() {
         // change scene to standard pink
         scene.background = pink;
         env = null;
-        console.log(env);
     } else if (keyboard.pressed("shift+1")) {
         // change scene to paris environment
         SceneLoader.load('./utils/scenes/paris.hdr', function (texture) {
@@ -378,9 +377,12 @@ function checkKeyboard() {
             scene.background = texture;
             env = texture;
         });
-        console.log(env);
     } else if (keyboard.pressed("shift+2")) {
-        // TODO
+        SceneLoader.load('./utils/scenes/stars.hdr', function (texture) {
+            texture.mapping = THREE.EquirectangularReflectionMapping;
+            scene.background = texture;
+            env = texture;
+        });
     } else if (keyboard.pressed("shift+3")) {
         // TODO
     } else if (keyboard.pressed("shift+4")) {
