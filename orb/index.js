@@ -10,7 +10,7 @@ import {RGBELoader} from 'jsm/loaders/RGBELoader.js';
 /////////////////////////////////////////////////////////
 // Setup GUI for hdr environment
 /////////////////////////////////////////////////////////
-// https://fossies.org/linux/three.js/examples/webgl_loader_texture_exr.html
+// https://polyhaven.com/hdris
 const Params = {
     exposure: 1.0,
     hdrToneMapping: 'ACESFilmic'
