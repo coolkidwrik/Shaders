@@ -63,7 +63,7 @@ To view how the shaders might look in different environments, we can change the 
 GUI in the top right corner enables options to change renderer tone mapping, as well as lighting exposure from the background.
 
 ### Demo
-<div style="display: flex;">
+<div display="flex">
   <div>
     <img src="./images/blinn_orb.png" alt="blinn_ball" width="200" height="175">
     <p>Blinn-Phong</p>
