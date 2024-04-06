@@ -406,9 +406,8 @@ function checkKeyboard() {
         // change material to mirror
         console.log(env);
         mesh_mat = mirrorMaterial;
-
     } else if (keyboard.pressed("0")) {
-
+        // no material change implemented yet
     }
 
     // change the object
@@ -424,6 +423,7 @@ function checkKeyboard() {
         scene.add(subject);
     } else if (keyboard.pressed("shift+H")) { 
         // place helmet
+        // TODO: fix bug where GUI disappears when helmet is placed
         scene.remove(subject);
         subject = damagedHelmetObject;
         scene.add(subject);

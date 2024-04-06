@@ -108,12 +108,27 @@ GUI in the top right corner enables options to change renderer tone mapping, as 
   <tr>
     <td align="center">Diamond</td>
     <td align="center">Noise</td>
-    <td align="center">Dots</td>
+    <td align="center">Polka-Dots</td>
   </tr>
   <tr>
     <td><img src="./images/diamond.gif" alt="toon_ball" width="250" height="250"></td>
     <td><img src="./images/noise.gif" alt="toon_ball" width="250" height="250"></td>
     <td><img src="./images/dots.gif" alt="toon_ball" width="250" height="250"></td>
+  </tr>
+</table>
+
+<p align="center"><ins>Physical Based Rendering(PBR) and Image Based Lighting(IBL)</ins></p>
+
+<table>
+  <tr>
+    <td align="center">Paris Scene</td>
+    <td align="center">Starry Scene</td>
+    <td align="center">Sky Scene</td>
+  </tr>
+  <tr>
+    <td><img src="./images/helmet/paris_helmet.gif" alt="toon_ball" width="250" height="250"></td>
+    <td><img src="./images/helmet/starry_helmet.gif" alt="toon_ball" width="250" height="250"></td>
+    <td><img src="./images/helmet/sky_helmet.gif" alt="toon_ball" width="250" height="250"></td>
   </tr>
 </table>
 
