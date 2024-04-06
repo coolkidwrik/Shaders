@@ -4,7 +4,7 @@ import { THREEx } from './utils/KeyboardState.js';
 import { GUI } from 'jsm/libs/dat.gui.module.js';
 import { RGBELoader } from 'jsm/loaders/RGBELoader.js';
 import { OBJLoader } from 'jsm/loaders/OBJLoader.js';
-
+import { GLTFLoader } from 'jsm/loaders/GLTFLoader.js';
 
 /////////////////////////////////////////////////////////
 // Setup GUI for hdr environment
@@ -29,6 +29,62 @@ gui.add( Params, 'hdrToneMapping', Object.keys(hdrToneMappingOptions));
 gui.add( Params, 'exposure', 0, 2, 0.01 );
 gui.open();
 
+
+/////////////////////////////////////////////////////////
+// Physical Based Rendering(PBR) and Image Based Lighting(IBL) setup
+/////////////////////////////////////////////////////////
+
+
+// Helmet glTF textures 
+function loadTextureForGLTF(path, useForColorData = false) {
+  let texture = new THREE.TextureLoader().load(path);
+  // required texture properties:
+  if (useForColorData) { texture.encoding = THREE.sRGBEncoding; } // If texture is used for color information, set colorspace.
+  texture.flipY = false; // UVs use the convention that (0, 0) corresponds to the upper left corner of a texture.
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  // optional properties for textures
+  texture.magFilter = THREE.LinearFilter;
+  texture.minFilter = THREE.LinearMipmapLinearFilter;
+  return texture;
+}
+
+// Helmet glTF textures for PBR
+const helmetAlbedoMap = loadTextureForGLTF('./utils/glb/DamagedHelmet/Default_albedo.jpg', true);
+const helmetNormalMap = loadTextureForGLTF('./utils/glb/DamagedHelmet/Default_normal.jpg');
+const helmetEmissiveMap = loadTextureForGLTF('./utils/glb/DamagedHelmet/Default_emissive.jpg', true);
+const helmetAmbientOcclusionMap = loadTextureForGLTF('./utils/glb/DamagedHelmet/Default_AO.jpg');
+const helmetMetallicAndRoughnessMap = loadTextureForGLTF('./utils/glb/DamagedHelmet/Default_metalRoughness.jpg');
+
+// Helmet material
+// this includes all the textures for PBR with helmet glb
+const helmetMaterial = new THREE.MeshStandardMaterial({
+  emissive: new THREE.Color(1,1,1),
+  metalness: 1.0,
+  envMapIntensity: 1.0,
+
+  emissiveMap: helmetEmissiveMap,
+  map: helmetAlbedoMap,
+  normalMap: helmetNormalMap,
+  roughnessMap: helmetMetallicAndRoughnessMap,
+  metalnessMap: helmetMetallicAndRoughnessMap,
+  aoMap: helmetAmbientOcclusionMap,
+});
+
+let damagedHelmetObject;
+{
+  const gltfLoader = new GLTFLoader();
+  gltfLoader.load("./utils/glb/DamagedHelmet/DamagedHelmet.gltf", (gltf) => {
+    damagedHelmetObject = gltf.scene;
+    damagedHelmetObject.traverse( function (child) {
+      if (child.isMesh) 
+      {
+        // applying textures to the helmet glb for PBR
+        child.material = helmetMaterial;
+      }
+    });
+  });
+}
 
 /////////////////////////////////////////////////////////
 // get glsl code
@@ -161,7 +217,7 @@ var ball_geometry = new THREE.IcosahedronGeometry(1, 12);
 var dillo;
 
 var objectLoader = new OBJLoader();
-objectLoader.load('./utils/obj/armadillo.obj', function (obj) {
+objectLoader.load('./utils/obj/armadillo.obj', (obj) => {
     dillo = obj;
     dillo.position.set(0.0, 0.0, -1.0);
     dillo.rotation.y = Math.PI;
@@ -305,13 +361,17 @@ const mirrorMaterial = new THREE.ShaderMaterial({
 var mesh = new THREE.Mesh(ball_geometry, phongMaterial); 
 var scale = 1;
 mesh.scale.set(scale, scale, scale);
-scene.add(mesh);
 
 /////////////////////////////////////////////////////////
 // Update Scene
 /////////////////////////////////////////////////////////
 // material to use
 let mesh_mat = phongMaterial;
+
+// object on the scene
+let subject = mesh;
+
+scene.add(subject);
 
 // create keyboard state
 var keyboard = new THREEx.KeyboardState();
@@ -354,13 +414,19 @@ function checkKeyboard() {
     // change the object
     if (keyboard.pressed("shift+A")) {
         // place armadillo
-
-        scene.remove(mesh);
-        scene.add(dillo);
+        scene.remove(subject);
+        subject = dillo;
+        scene.add(subject);
     } else if (keyboard.pressed("shift+B")) {
         // place ball
-        scene.remove(dillo);
-        scene.add(mesh);
+        scene.remove(subject);
+        subject = mesh;
+        scene.add(subject);
+    } else if (keyboard.pressed("shift+H")) { 
+        // place helmet
+        scene.remove(subject);
+        subject = damagedHelmetObject;
+        scene.add(subject);
     }
 
     // change material
@@ -383,14 +449,17 @@ function checkKeyboard() {
         // change scene to paris environment
         env = env1;
         scene.background = env;
+        helmetMaterial.envMap = env;
     } else if (keyboard.pressed("shift+2")) {
         // change scene to stars environment
         env = env2;
         scene.background = env;
+        helmetMaterial.envMap = env;
     } else if (keyboard.pressed("shift+3")) {
         // change scene to sunset environment
         env = env3;
         scene.background = env;
+        helmetMaterial.envMap = env;
     }
 
 
@@ -425,9 +494,11 @@ function updateMaterial() {
     dotsMaterial.needsUpdate = true;
     phongMaterial.needsUpdate = true;
     blinnMaterial.needsUpdate = true;
+    toonMaterial.needsUpdate = true;
     toonGlassMaterial.needsUpdate = true;
     staticMaterial.needsUpdate = true;
     mirrorMaterial.needsUpdate = true;
+    helmetMaterial.needsUpdate = true;
 }
 
 function update() {
