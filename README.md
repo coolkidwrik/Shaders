@@ -19,7 +19,8 @@
 ## Various shaders written in GLSL
 
 <h3><ins>Controls</ins></h3>
-<ins>Lighting</ins>  
+<ins>Lighting</ins>
+
 There is a rainbow orb on the scene which acts as dynamic lighting. This orb can be controlled as follows:
 <ul>
   <li>↑: forward</li>
@@ -79,25 +80,41 @@ GUI in the top right corner enables options to change renderer tone mapping, as 
     <p>Noise</p>
   </div>
 </div> -->
-
+<p align="center"><ins>Static Shaders</ins></p>
 <table>
   <tr>
     <td align="center"> </td>
     <td align="center">Blinn-Phong</td>
     <td align="center">Toon</td>
-    <td align="center">Noise</td>
+    <td align="center">Static</td>
   </tr>
   <tr>
     <td align="center">Ball</td>
     <td><img src="./images/blinn_orb.png" alt="blinn_ball" width="220" height="192.5"></td>
     <td><img src="./images/toon_orb.png" alt="toon_ball" width="220" height="192.5"></td>
-    <td><img src="./images/noise_orb.png" alt="toon_ball" width="220" height="192.5"></td>
+    <td><img src="./images/static_orb.png" alt="toon_ball" width="220" height="192.5"></td>
   </tr>
   <tr>
     <td align="center">Armadillo</td>
-    <td><img src="./images/armadillo_blinn.png" alt="blinn_ball" width="220" height="210"></td>
-    <td><img src="./images/armadillo_toon.png" alt="toon_ball" width="220" height="210"></td>
-    <td><img src="./images/armadillo_noise.png" alt="toon_ball" width="220" height="210"></td>
+    <td><img src="./images/armadillo_blinn.png" alt="blinn_ball" width="220" height="220"></td>
+    <td><img src="./images/armadillo_toon.png" alt="toon_ball" width="220" height="220"></td>
+    <td><img src="./images/armadillo_static.png" alt="noise_ball" width="220" height="220"></td>
   </tr>
 </table>
+
+<p align="center"><ins>Animated Shaders</ins></p>
+
+<table>
+  <tr>
+    <td align="center">Diamond</td>
+    <td align="center">Noise</td>
+    <td align="center">Dots</td>
+  </tr>
+  <tr>
+    <td><img src="./images/diamond.gif" alt="toon_ball" width="220" height="220"></td>
+    <td><img src="./images/noise.gif" alt="toon_ball" width="220" height="220"></td>
+    <td><img src="./images/dots.gif" alt="toon_ball" width="220" height="220"></td>
+  </tr>
+</table>
+
 
