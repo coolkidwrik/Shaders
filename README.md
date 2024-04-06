@@ -18,9 +18,8 @@
 # Shaders
 ## Various shaders written in GLSL
 
-### Controls
-<ins>Lighting</ins>
-
+<h3><ins>Controls</ins></h3>
+<ins>Lighting</ins>  
 There is a rainbow orb on the scene which acts as dynamic lighting. This orb can be controlled as follows:
 <ul>
   <li>↑: forward</li>
@@ -62,7 +61,8 @@ To view how the shaders might look in different environments, we can change the 
 
 GUI in the top right corner enables options to change renderer tone mapping, as well as lighting exposure from the background.
 
-### Demo
+<h3><ins>Demo</ins></h3>
+
 <!-- <div display="flex">
   <div>
     <img src="./images/blinn_orb.png" alt="blinn_ball" width="200" height="175">
@@ -79,6 +79,7 @@ GUI in the top right corner enables options to change renderer tone mapping, as 
     <p>Noise</p>
   </div>
 </div> -->
+
 <table>
   <tr>
     <td align="center"> </td>
