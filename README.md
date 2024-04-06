@@ -88,15 +88,15 @@ GUI in the top right corner enables options to change renderer tone mapping, as 
   </tr>
   <tr>
     <td align="center">Ball</td>
-    <td><img src="./images/blinn_orb.png" alt="blinn_ball" width="200" height="175"></td>
-    <td><img src="./images/toon_orb.png" alt="toon_ball" width="200" height="175"></td>
-    <td><img src="./images/noise_orb.png" alt="toon_ball" width="200" height="175"></td>
+    <td><img src="./images/blinn_orb.png" alt="blinn_ball" width="220" height="192.5"></td>
+    <td><img src="./images/toon_orb.png" alt="toon_ball" width="220" height="192.5"></td>
+    <td><img src="./images/noise_orb.png" alt="toon_ball" width="220" height="192.5"></td>
   </tr>
   <tr>
     <td align="center">Armadillo</td>
-    <td><img src="./images/armadillo_blinn.png" alt="blinn_ball" width="200" height="175"></td>
-    <td><img src="./images/armadillo_toon.png" alt="toon_ball" width="200" height="175"></td>
-    <td><img src="./images/armadillo_noise.png" alt="toon_ball" width="200" height="175"></td>
+    <td><img src="./images/armadillo_blinn.png" alt="blinn_ball" width="220" height="210"></td>
+    <td><img src="./images/armadillo_toon.png" alt="toon_ball" width="220" height="210"></td>
+    <td><img src="./images/armadillo_noise.png" alt="toon_ball" width="220" height="210"></td>
   </tr>
 </table>
 
