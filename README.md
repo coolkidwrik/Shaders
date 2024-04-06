@@ -63,7 +63,7 @@ To view how the shaders might look in different environments, we can change the 
 GUI in the top right corner enables options to change renderer tone mapping, as well as lighting exposure from the background.
 
 ### Demo
-<div display="flex">
+<!-- <div display="flex">
   <div>
     <img src="./images/blinn_orb.png" alt="blinn_ball" width="200" height="175">
     <p>Blinn-Phong</p>
@@ -78,5 +78,17 @@ GUI in the top right corner enables options to change renderer tone mapping, as 
     <img src="./images/noise_orb.png" alt="noise_ball" width="200" height="175">
     <p>Noise</p>
   </div>
-</div>
+</div> -->
+<table>
+  <tr>
+    <td><img src="./images/blinn_orb.png" alt="blinn_ball" width="200" height="175"></td>
+    <td><img src="./images/toon_orb.png" alt="toon_ball" width="200" height="175"></td>
+    <td><img src="./images/noise_orb.png" alt="toon_ball" width="200" height="175"></td>
+  </tr>
+  <tr>
+    <td align="center">Blinn-Phong</td>
+    <td align="center">Toon</td>
+    <td align="center">Noise</td>
+  </tr>
+</table>
 
