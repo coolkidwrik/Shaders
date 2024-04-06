@@ -111,9 +111,9 @@ GUI in the top right corner enables options to change renderer tone mapping, as 
     <td align="center">Dots</td>
   </tr>
   <tr>
-    <td><img src="./images/diamond.gif" alt="toon_ball" width="220" height="220"></td>
-    <td><img src="./images/noise.gif" alt="toon_ball" width="220" height="220"></td>
-    <td><img src="./images/dots.gif" alt="toon_ball" width="220" height="220"></td>
+    <td><img src="./images/diamond.gif" alt="toon_ball" width="250" height="250"></td>
+    <td><img src="./images/noise.gif" alt="toon_ball" width="250" height="250"></td>
+    <td><img src="./images/dots.gif" alt="toon_ball" width="250" height="250"></td>
   </tr>
 </table>
 
