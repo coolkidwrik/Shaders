@@ -81,14 +81,22 @@ GUI in the top right corner enables options to change renderer tone mapping, as 
 </div> -->
 <table>
   <tr>
+    <td align="center"> </td>
+    <td align="center">Blinn-Phong</td>
+    <td align="center">Toon</td>
+    <td align="center">Noise</td>
+  </tr>
+  <tr>
+    <td align="center">Ball</td>
     <td><img src="./images/blinn_orb.png" alt="blinn_ball" width="200" height="175"></td>
     <td><img src="./images/toon_orb.png" alt="toon_ball" width="200" height="175"></td>
     <td><img src="./images/noise_orb.png" alt="toon_ball" width="200" height="175"></td>
   </tr>
   <tr>
-    <td align="center">Blinn-Phong</td>
-    <td align="center">Toon</td>
-    <td align="center">Noise</td>
+    <td align="center">Armadillo</td>
+    <td><img src="./images/armadillo_blinn.png" alt="blinn_ball" width="200" height="175"></td>
+    <td><img src="./images/armadillo_toon.png" alt="toon_ball" width="200" height="175"></td>
+    <td><img src="./images/armadillo_noise.png" alt="toon_ball" width="200" height="175"></td>
   </tr>
 </table>
 
