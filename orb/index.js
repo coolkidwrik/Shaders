@@ -34,6 +34,8 @@ gui.open();
 // Physical Based Rendering(PBR) and Image Based Lighting(IBL) setup
 /////////////////////////////////////////////////////////
 
+// textures and gltf model from:
+// https://github.com/KhronosGroup/glTF-Sample-Models/tree/main/2.0/DamagedHelmet/glTF
 
 // Helmet glTF textures 
 function loadTextureForGLTF(path, useForColorData = false) {
