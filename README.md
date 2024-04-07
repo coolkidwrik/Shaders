@@ -54,6 +54,7 @@ The default geometry of the subject is a ball. This can be changed as follows:
 
 To view how the shaders might look in different environments, we can change the background environment using the following:
 <ul>
+  <li>shift + 0: No Background</li>
   <li>shift + 1: Paris Benches</li>
   <li>shift + 2: Starry Night</li>
   <li>shift + 3: Open Sky</li>
@@ -118,7 +119,11 @@ GUI in the top right corner enables options to change renderer tone mapping, as 
 </table>
 
 <p align="center"><ins>Physical Based Rendering(PBR) and Image Based Lighting(IBL)</ins></p>
-
+You can place the damaged helmet onto the scene by pressing 
+<ul>
+  <li>shift+H </li>
+</ul> 
+The properties of the helmet like normals, metalness and emissiveness were set using PBR textures. Furthermore, the surface of the helmet reflects the background scene using IBL.
 <table>
   <tr>
     <td align="center">Paris Scene</td>
