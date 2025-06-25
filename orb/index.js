@@ -98,31 +98,31 @@ async function loadShader(vs_path, fs_path) {
 }
 
 // diamond shader
-var diamond_shader = await loadShader('../Diamond/diamond.vs.glsl', '../Diamond/diamond.fs.glsl');
+var diamond_shader = await loadShader('../GLSL/Diamond/diamond.vs.glsl', '../GLSL/Diamond/diamond.fs.glsl');
 
 // noise shader
-var noise_shader = await loadShader('../Normal_Noise/noise.vs.glsl', '../Normal_Noise/noise.fs.glsl');
+var noise_shader = await loadShader('../GLSL/Normal_Noise/noise.vs.glsl', '../GLSL/Normal_Noise/noise.fs.glsl');
 
 // polka dots shader
-var dots_shader = await loadShader('../polka-dots/dots.vs.glsl', '../polka-dots/dots.fs.glsl');
+var dots_shader = await loadShader('../GLSL/Polka-Dots/dots.vs.glsl', '../GLSL/Polka-Dots/dots.fs.glsl');
 
 // toon shader
-var toon_shader = await loadShader('../toon_shading/toon.vs.glsl', '../toon_shading/toon.fs.glsl');
+var toon_shader = await loadShader('../GLSL/Toon_Shading/toon.vs.glsl', '../GLSL/Toon_Shading/toon.fs.glsl');
 
 // phong shader
-let vs = await fetch('../phong_shading/phong.vs.glsl').then((response) => response.text());
-let fs = await fetch('../phong_shading/phong.fs.glsl').then((response) => response.text());
-let fs1 = await fetch('../phong_shading/blinn_phong.fs.glsl').then((response) => response.text());
+let vs = await fetch('../GLSL/Phong_Shading/phong.vs.glsl').then((response) => response.text());
+let fs = await fetch('../GLSL/Phong_Shading/phong.fs.glsl').then((response) => response.text());
+let fs1 = await fetch('../GLSL/Phong_Shading/blinn_phong.fs.glsl').then((response) => response.text());
 var phong_shader = { VS: vs, FS_PHONG: fs , FS_BLINN: fs1 };
 
 // glass shader
-var glass_shader = await loadShader('../glass/glass.vs.glsl', '../glass/toon_glass.fs.glsl');
+var glass_shader = await loadShader('../GLSL/Toon_Glass/toon_glass.vs.glsl', '../GLSL/Toon_Glass/toon_glass.fs.glsl');
 
 // static shader
-var static_shader = await loadShader('../static/static.vs.glsl', '../static/static.fs.glsl');
+var static_shader = await loadShader('../GLSL/Static/static.vs.glsl', '../GLSL/Static/static.fs.glsl');
 
 // mirror shader
-var mirror_shader = await loadShader('../mirror/mirror.vs.glsl', '../mirror/mirror.fs.glsl');
+var mirror_shader = await loadShader('../GLSL/Mirror/mirror.vs.glsl', '../GLSL/Mirror/mirror.fs.glsl');
 
 
 
