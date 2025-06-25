@@ -52,11 +52,11 @@ function loadTextureForGLTF(path, useForColorData = false) {
 }
 
 // Helmet glTF textures for PBR
-const helmetAlbedoMap = loadTextureForGLTF('./utils/glb/DamagedHelmet/Default_albedo.jpg', true);
-const helmetNormalMap = loadTextureForGLTF('./utils/glb/DamagedHelmet/Default_normal.jpg');
-const helmetEmissiveMap = loadTextureForGLTF('./utils/glb/DamagedHelmet/Default_emissive.jpg', true);
-const helmetAmbientOcclusionMap = loadTextureForGLTF('./utils/glb/DamagedHelmet/Default_AO.jpg');
-const helmetMetallicAndRoughnessMap = loadTextureForGLTF('./utils/glb/DamagedHelmet/Default_metalRoughness.jpg');
+const helmetAlbedoMap = loadTextureForGLTF('./orb/utils/glb/DamagedHelmet/Default_albedo.jpg', true);
+const helmetNormalMap = loadTextureForGLTF('./orb/utils/glb/DamagedHelmet/Default_normal.jpg');
+const helmetEmissiveMap = loadTextureForGLTF('./orb/utils/glb/DamagedHelmet/Default_emissive.jpg', true);
+const helmetAmbientOcclusionMap = loadTextureForGLTF('./orb/utils/glb/DamagedHelmet/Default_AO.jpg');
+const helmetMetallicAndRoughnessMap = loadTextureForGLTF('./orb/utils/glb/DamagedHelmet/Default_metalRoughness.jpg');
 
 // Helmet material
 // this includes all the textures for PBR with helmet glb
@@ -76,7 +76,7 @@ const helmetMaterial = new THREE.MeshStandardMaterial({
 let damagedHelmetObject;
 {
   const gltfLoader = new GLTFLoader();
-  gltfLoader.load("./utils/glb/DamagedHelmet/DamagedHelmet.gltf", (gltf) => {
+  gltfLoader.load("./orb/utils/glb/DamagedHelmet/DamagedHelmet.gltf", (gltf) => {
     damagedHelmetObject = gltf.scene;
     damagedHelmetObject.traverse( function (child) {
       if (child.isMesh) 
@@ -98,37 +98,37 @@ async function loadShader(vs_path, fs_path) {
 }
 
 // diamond shader
-var diamond_shader = await loadShader('../GLSL/Diamond/diamond.vs.glsl', '../GLSL/Diamond/diamond.fs.glsl');
+var diamond_shader = await loadShader('./GLSL/Diamond/diamond.vs.glsl', './GLSL/Diamond/diamond.fs.glsl');
 
 // noise shader
-var noise_shader = await loadShader('../GLSL/Normal_Noise/noise.vs.glsl', '../GLSL/Normal_Noise/noise.fs.glsl');
+var noise_shader = await loadShader('./GLSL/Normal_Noise/noise.vs.glsl', './GLSL/Normal_Noise/noise.fs.glsl');
 
 // polka dots shader
-var dots_shader = await loadShader('../GLSL/Polka-Dots/dots.vs.glsl', '../GLSL/Polka-Dots/dots.fs.glsl');
+var dots_shader = await loadShader('./GLSL/Polka-Dots/dots.vs.glsl', './GLSL/Polka-Dots/dots.fs.glsl');
 
 // toon shader
-var toon_shader = await loadShader('../GLSL/Toon_Shading/toon.vs.glsl', '../GLSL/Toon_Shading/toon.fs.glsl');
+var toon_shader = await loadShader('./GLSL/Toon_Shading/toon.vs.glsl', './GLSL/Toon_Shading/toon.fs.glsl');
 
 // phong shader
-let vs = await fetch('../GLSL/Phong_Shading/phong.vs.glsl').then((response) => response.text());
-let fs = await fetch('../GLSL/Phong_Shading/phong.fs.glsl').then((response) => response.text());
-let fs1 = await fetch('../GLSL/Phong_Shading/blinn_phong.fs.glsl').then((response) => response.text());
+let vs = await fetch('./GLSL/Phong_Shading/phong.vs.glsl').then((response) => response.text());
+let fs = await fetch('./GLSL/Phong_Shading/phong.fs.glsl').then((response) => response.text());
+let fs1 = await fetch('./GLSL/Phong_Shading/blinn_phong.fs.glsl').then((response) => response.text());
 var phong_shader = { VS: vs, FS_PHONG: fs , FS_BLINN: fs1 };
 
 // glass shader
-var glass_shader = await loadShader('../GLSL/Toon_Glass/toon_glass.vs.glsl', '../GLSL/Toon_Glass/toon_glass.fs.glsl');
+var glass_shader = await loadShader('./GLSL/Toon_Glass/toon_glass.vs.glsl', './GLSL/Toon_Glass/toon_glass.fs.glsl');
 
 // static shader
-var static_shader = await loadShader('../GLSL/Static/static.vs.glsl', '../GLSL/Static/static.fs.glsl');
+var static_shader = await loadShader('./GLSL/Static/static.vs.glsl', './GLSL/Static/static.fs.glsl');
 
 // mirror shader
-var mirror_shader = await loadShader('../GLSL/Mirror/mirror.vs.glsl', '../GLSL/Mirror/mirror.fs.glsl');
+var mirror_shader = await loadShader('./GLSL/Mirror/mirror.vs.glsl', './GLSL/Mirror/mirror.fs.glsl');
 
 
 
 
 // dynamic light shader
-var dynamic_light_shader = await loadShader('./utils/glsl/orb.vs.glsl', './utils/glsl/orb.fs.glsl');
+var dynamic_light_shader = await loadShader('./orb/utils/glsl/orb.vs.glsl', './orb/utils/glsl/orb.fs.glsl');
 
 /////////////////////////////////////////////////////////
 // load scene textures
@@ -143,17 +143,17 @@ let env3;
 let env;
 
 // load default HDR environment
-await SceneLoader.load('./utils/scenes/paris.hdr', function (texture) {
+await SceneLoader.load('./orb/utils/scenes/paris.hdr', function (texture) {
     texture.mapping = THREE.EquirectangularReflectionMapping;
     env1 = texture;
 });
 
-await SceneLoader.load('./utils/scenes/stars.hdr', function (texture) {
+await SceneLoader.load('./orb/utils/scenes/stars.hdr', function (texture) {
     texture.mapping = THREE.EquirectangularReflectionMapping;
     env2 = texture;
 });
 
-await SceneLoader.load('./utils/scenes/sky.hdr', function (texture) {
+await SceneLoader.load('./orb/utils/scenes/sky.hdr', function (texture) {
     texture.mapping = THREE.EquirectangularReflectionMapping;
     env3 = texture;
 });
@@ -219,7 +219,7 @@ var ball_geometry = new THREE.IcosahedronGeometry(1, 12);
 var dillo;
 
 var objectLoader = new OBJLoader();
-objectLoader.load('./utils/obj/armadillo.obj', (obj) => {
+objectLoader.load('./orb/utils/obj/armadillo.obj', (obj) => {
     dillo = obj;
     dillo.position.set(0.0, 0.0, -1.0);
     dillo.rotation.y = Math.PI;
