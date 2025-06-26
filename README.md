@@ -17,6 +17,7 @@
 
 # Shaders
 ## Various shaders written in GLSL
+### [Click here for Demo](https://wrik-shaders-demo.vercel.app/)
 
 <h3><ins>Controls</ins></h3>
 <ins>Lighting</ins>
